@@ -1,5 +1,6 @@
 package models;
-import java.sql.Date;
+import java.util.Date;
+import java.util.Calendar;
 
 public class Member extends User implements Observer{
 //	thuoc tinh member
@@ -17,10 +18,27 @@ public class Member extends User implements Observer{
 		this.expiredVIP = expiredVIP;
 	}
 //	phuong thuc khac
-	public void upgradeVIP() {}
+	public void upgradeVIP() {
+		this.AccountStatus = "VIP";
+
+    Calendar lich = Calendar.getInstance();
+
+    // Trường hợp 1: Member chưa từng là VIP, hoặc VIP đã hết hạn
+    // → tính 30 ngày kể từ HÔM NAY
+    if (expiredVIP == null || expiredVIP.before(new Date())) {
+        lich.setTime(new Date());
+    } 
+    // Trường hợp 2: Member đang là VIP, còn hạn
+    // → cộng thêm 30 ngày vào hạn CŨ, không mất ngày còn lại
+    else {
+        lich.setTime(expiredVIP);
+    }
+
+    lich.add(Calendar.DAY_OF_MONTH, 30);
+    this.expiredVIP = lich.getTime();
+    }
 	@Override
 	public void update(String notification) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("[MEMBER - " + getEmail() + "] " + notification);		
 	};
 }
