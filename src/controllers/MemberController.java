@@ -68,9 +68,9 @@ public class MemberController {
 	public static void handleDeleteAccount(MemberView view, Member currentMember) {
 	    int confirm = JOptionPane.showConfirmDialog(
 	        view,
-	        "<html><b>Bạn chắc chắn muốn xóa tài khoản?</b><br>" +
-	        "Email: <b>" + currentMember.getEmail() + "</b><br><br>" +
-	        "<font color='red'>Hành động này KHÔNG THỂ hoàn tác!</font></html>",
+	        "Bạn chắc chắn muốn xóa tài khoản?" +
+	        "Email:" + currentMember.getEmail() +
+	        "Hành động này KHÔNG THỂ hoàn tác!",
 	        "⚠️  Xác nhận xóa tài khoản",
 	        JOptionPane.YES_NO_OPTION,
 	        JOptionPane.WARNING_MESSAGE

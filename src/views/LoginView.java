@@ -167,7 +167,7 @@ public class LoginView extends JPanel {
         repaint();
     }
 //	logic xử lý phần xác thực
-    private void handleAuth() {
+  private void handleAuth() {
         String email    = emailField.getText().trim();
         String password = new String(passwordField.getPassword());
         if (email.isEmpty() || password.isEmpty()) {
@@ -185,7 +185,7 @@ public class LoginView extends JPanel {
             }
             authListener.onRegister(name, email, password);
         }
-    }
+  }
     // logic hiển thị tin nhắn
     public void showMessage(String msg, Color color) {
         messageLabel.setText(msg); 

@@ -297,7 +297,7 @@ public class MemberView extends JPanel {
         title.setForeground(Theme.ERROR);
         title.setAlignmentX(LEFT_ALIGNMENT);
 
-        JLabel warn = new JLabel("<html>Xóa tài khoản sẽ không thể hoàn tác.<br>Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn.</html>");
+        JLabel warn = new JLabel("Xóa tài khoản sẽ không thể hoàn tác.Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn.");
         warn.setFont(Theme.fontPlain(12)); 
         warn.setForeground(Theme.TEXT_SECONDARY);
         warn.setAlignmentX(LEFT_ALIGNMENT);
