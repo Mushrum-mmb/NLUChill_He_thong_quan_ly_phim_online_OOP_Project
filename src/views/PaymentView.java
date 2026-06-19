@@ -2,6 +2,10 @@ package views;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
+import controllers.PaymentController;
+import models.Member;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -11,11 +15,9 @@ import java.awt.event.*;
  * Thanh toán thành công → hiển thị màn hình xác nhận đẹp.
  */
 public class PaymentView extends JPanel {
-
-    public interface PaymentListener {
+	public interface PaymentListener {
         void onPay(int packageIndex, String method, String paymentInfo);
     }
-
     private PaymentListener paymentListener;
 
     // Thông tin member
@@ -49,8 +51,7 @@ public class PaymentView extends JPanel {
         buildFormPanel();
         buildSuccessPanel();
     }
-
-    // ══════════════════════════════════════════
+	// ══════════════════════════════════════════
     //  FORM PANEL — nhập thông tin thanh toán
     // ══════════════════════════════════════════
     private void buildFormPanel() {
@@ -317,7 +318,6 @@ public class PaymentView extends JPanel {
         }
         if (paymentListener != null) paymentListener.onPay(selectedPackage, selectedMethod, info);
     }
-
     // ══════════════════════════════════════════
     //  PUBLIC METHODS
     // ══════════════════════════════════════════

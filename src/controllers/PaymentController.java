@@ -10,8 +10,8 @@ public class PaymentController {
     private int[] PRICES    = {50000, 120000, 400000};
     private String[] LABELS = {"1 month", "3 months", "1 year"};
 
-   //Nâng VIP
-    public Payment processVIPUpgrade(Member member, int packageIndex) {
+   
+    public Payment processVIPUpgrade(Member member, int packageIndex, PaymentStrategy strategy) {
         int price = PRICES[packageIndex];
         System.out.println("Processing VIP upgrade: " + LABELS[packageIndex] + " = " + price + " VND");
             member.upgradeVIP();
@@ -19,4 +19,5 @@ public class PaymentController {
             System.out.println("Payment recorded: " + payment);
             return payment;
         }
+     
 }

@@ -53,9 +53,39 @@ public class AdminView extends JPanel {
     private List<Movie>  movies = new ArrayList<>();
     private List<Member> users  = new ArrayList<>();
 
-    public AdminView() {
+    public AdminView(AdminController controller) {
     	setBackground(Theme.BG_DARK); 
-    	setLayout(new BorderLayout()); 
+    	setLayout(new BorderLayout());
+    	buildUI();
+    	this.controller = controller;
+    }
+    public void setController(AdminController controller) {
+		this.controller = controller;
+	}
+
+	private void buildUI() {
+        JPanel header = new JPanel(new BorderLayout());
+        header.setBackground(Theme.BG_DARK); 
+        header.setBorder(BorderFactory.createEmptyBorder(24,32,12,32));
+        JLabel title = new JLabel("Xin chào Admin");
+        title.setFont(Theme.fontBold(22)); 
+        title.setForeground(Theme.TEXT_PRIMARY);
+        JLabel sub = new JLabel("Quản lý phim và tài khoản người dùng");
+        sub.setFont(Theme.fontPlain(13)); 
+        sub.setForeground(Theme.TEXT_SECONDARY);
+        JPanel tBox = new JPanel(); 
+        tBox.setOpaque(false);
+        tBox.setLayout(new BoxLayout(tBox, BoxLayout.Y_AXIS));
+        tBox.add(title); 
+        tBox.add(Box.createVerticalStrut(3)); 
+        tBox.add(sub);
+        header.add(tBox, BorderLayout.WEST);
+        JPanel top = new JPanel(new BorderLayout()); 
+        top.setBackground(Theme.BG_DARK);
+        top.add(header, BorderLayout.NORTH); 
+        top.add(buildStats(), BorderLayout.CENTER);
+        add(top, BorderLayout.NORTH); 
+        add(buildTabs(), BorderLayout.CENTER);
     }
     private JPanel buildStats() {
         JPanel row = new JPanel(new GridLayout(1,4,12,0));
@@ -226,6 +256,7 @@ public class AdminView extends JPanel {
             		lnkF.getText().isEmpty()?"/videos/"+nF.getText().trim().toLowerCase().replace(" ","-"):lnkF.getText().trim(),
             				vip.isSelected());
             if(controller!=null) controller.addMovie(m); d.dispose();
+            loadMovies(controller.getAllMovie());
         });
         form.add(title); 
         form.add(Box.createVerticalStrut(18));
@@ -319,6 +350,7 @@ public class AdminView extends JPanel {
             target.setLink(lnkF.getText().trim()); 
             target.setVip(vip.isSelected());
             if(controller!=null) controller.updateMovie(target); 
+            loadMovies(controller.getAllMovie());
             d.dispose();
         });
         form.add(title); 
@@ -368,6 +400,7 @@ public class AdminView extends JPanel {
 
         if (option == JOptionPane.YES_OPTION && controller != null) {
             controller.deleteMovie(row);
+            loadMovies(controller.getAllMovie());
         }
     }
     private void warnSelectedUser() {
@@ -398,19 +431,32 @@ public class AdminView extends JPanel {
     }
 
     private void toggleLock(boolean lock) {
-        int row=userTable.getSelectedRow();
-        if(row<0){
-        	JOptionPane.showMessageDialog(this,"Vui lòng chọn người dùng.","Chưa chọn",JOptionPane.WARNING_MESSAGE); 
-        	return;
+        int row = userTable.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Vui lòng chọn người dùng.",
+                    "Chưa chọn",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
         }
-        String email = (String) userTableModel.getValueAt(row,1);
-        Member t = users.stream().filter(
-        		u->u.getEmail().equals(email)).findFirst().orElse(null);
-        if(t==null) return;
-        t.setAccountStatus(lock?"LOCKED":"Regular");
-        if(controller!=null){
-        	if(lock)controller.lockUser(t);
-        	else controller.unlockUser(t);;
+        String email = (String) userTableModel.getValueAt(row, 1);
+        Member t = null;
+        for (Member u : users) {
+            if (u.getEmail().equals(email)) {
+                t = u;
+                break;
+            }
+        }
+        if (t == null) {
+            return;
+        }
+        if (controller != null) {
+            if (lock) {
+                controller.lockUser(t);
+            } else {
+                controller.unlockUser(t);
+            }
         }
         refreshUserTable();
     }

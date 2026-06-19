@@ -26,6 +26,7 @@ import javax.swing.JWindow;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
+import controllers.AdminController;
 import controllers.LoginController;
 import controllers.LoginDTO;
 import controllers.MovieController;
@@ -218,7 +219,8 @@ public class MainFrame extends JFrame {
 
         if (isAdmin) {
             // ── Admin Panel ──
-        	AdminView adminPanel = new AdminView();
+        	AdminController adminController = new AdminController(allMovies,allUsers);
+        	AdminView adminPanel = new AdminView(adminController);
             adminPanel.loadMovies(allMovies);
             adminPanel.loadUsers(allUsers);
             mainContent.add(adminPanel, "Admin");
@@ -240,7 +242,7 @@ public class MainFrame extends JFrame {
                     visa.setCvv(parts[2]);
                     strategy = visa;
                 }
-                Payment p = paymentController.processVIPUpgrade(currentMember, pkgIdx);
+                Payment p = paymentController.processVIPUpgrade(currentMember, pkgIdx,strategy);
                 if (p != null) {
                     paymentView.updateMemberInfo(currentMember.getEmail(), currentMember.getAccountStatus());
                     paymentView.showPaymentSuccess();
