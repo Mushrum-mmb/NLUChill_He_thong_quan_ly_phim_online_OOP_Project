@@ -66,7 +66,7 @@ public class MainFrame extends JFrame {
     private LoginController   loginController;
     private MovieController   movieController;
     private PaymentController paymentController;
-    private MemberController  memberController; // THÊM: Quản lý MemberController dưới dạng Instance
+    private MemberController  memberController; 
 
     private Member       currentMember;
     private boolean      isAdmin = false;
@@ -231,42 +231,38 @@ public class MainFrame extends JFrame {
             mainContent.add(adminPanel, "Admin");
         } else {
             // ── Payment View ──
-            paymentView = new PaymentView();
-            paymentView.updateMemberInfo(currentMember.getEmail(), currentMember.getAccountStatus());
-            paymentView.setPaymentListener((pkgIdx, method, paymentInfo) -> {
-                PaymentStrategy strategy;
-                if (method.equals("Momo")) {
-                    MomoPayment momo = new MomoPayment(null);
-                    momo.setPhoneNumber(paymentInfo);
-                    strategy = momo;
-                } else {
-                    String[] parts = paymentInfo.split("\\|");
-                    VisaPayment visa = new VisaPayment("", "", "");
-                    visa.setCardNumber(parts[0]);
-                    visa.setExpiry(parts[1]);
-                    visa.setCvv(parts[2]);
-                    strategy = visa;
-                }
-                Payment p = paymentController.processVIPUpgrade(currentMember, pkgIdx);
-                if (p != null) {
-                    paymentView.updateMemberInfo(currentMember.getEmail(), currentMember.getAccountStatus());
-                    paymentView.showPaymentSuccess();
-                    // FIX thêm: Cập nhật lại giao diện trang cá nhân và sidebar nếu người dùng vừa mua VIP thành công
-                    if (sidebarUserLbl != null) {
-                        switchPage("Movies"); // Trả về trang chính
-                    }
-                } else {
-                    paymentView.showPaymentError();
-                }
-            });
-            mainContent.add(paymentView, "VIP");
-        }
+        	 paymentView = new PaymentView();
+             paymentView.updateMemberInfo(currentMember.getEmail(), currentMember.getAccountStatus());
+             paymentView.setPaymentListener((pkgIdx, method, paymentInfo) -> {
+                 PaymentStrategy strategy;
+                 if (method.equals("Momo")) {
+                     MomoPayment momo = new MomoPayment(null);
+                     momo.setPhoneNumber(paymentInfo);
+                     strategy = momo;
+                 } else {
+                     String[] parts = paymentInfo.split("\\|");
+                     VisaPayment visa = new VisaPayment("", "", "");
+                     visa.setCardNumber(parts[0]);
+                     visa.setExpiry(parts[1]);
+                     visa.setCvv(parts[2]);
+                     strategy = visa;
+                 }
+                 Payment p = paymentController.processVIPUpgrade(currentMember, pkgIdx);
+                 if (p != null) {
+                     paymentView.updateMemberInfo(currentMember.getEmail(), currentMember.getAccountStatus());
+                     paymentView.showPaymentSuccess();
+                 } else {
+                     paymentView.showPaymentError();
+                 }
+             });
+             mainContent.add(paymentView, "VIP");
+         }
 
-        mainContent.add(buildProfilePanel(), "Profile");
-        add(mainContent, BorderLayout.CENTER);
-        revalidate(); repaint();
-        switchPage("Movies");
-    }
+         mainContent.add(buildProfilePanel(), "Profile");
+         add(mainContent, BorderLayout.CENTER);
+         revalidate(); repaint();
+         switchPage("Movies");
+     }
 
     // ════════════════════════════════════════════
     //  SIDEBAR
