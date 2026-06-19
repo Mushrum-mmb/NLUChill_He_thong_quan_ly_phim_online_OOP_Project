@@ -24,11 +24,14 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 import controllers.AdminController;
 import controllers.LoginController;
 import controllers.LoginDTO;
+import controllers.MemberController;
 import controllers.MovieController;
 import controllers.PaymentController;
 import controllers.UserDTO;
@@ -352,7 +355,7 @@ public class MainFrame extends JFrame {
     //  PROFILE PANEL
     // ════════════════════════════════════════════
     private MemberView memberView; // giữ tham chiếu để refresh sau thay đổi
-
+    private MemberController memberController;
     private JPanel buildProfilePanel() {
         // Admin: hiển thị card đơn giản (chỉ xem, không chỉnh sửa)
         if (isAdmin) {
@@ -384,7 +387,7 @@ public class MainFrame extends JFrame {
         }
 
        //cập nhật, đổi mật khẩu, xóa tài khoản
-        MemberView memView = new MemberView();
+        MemberView memView = new MemberView(memberController);
         memView.loadMember(currentMember);
         memView.setUserListener(new MemberView.MemberListener() {
 
@@ -426,5 +429,16 @@ public class MainFrame extends JFrame {
         toast.setLocation(loc.x+(getWidth()-toast.getWidth())/2, loc.y+getHeight()-70);
         toast.setVisible(true);
         Timer t = new Timer(2200, e -> toast.dispose()); t.setRepeats(false); t.start();
+    }
+    public static void main(String[] args) {
+  	  	System.setProperty("awt.useSystemAAFontSettings", "on");
+        System.setProperty("swing.aatext", "true");
+        SwingUtilities.invokeLater(() -> {	
+            try {
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            } catch (Exception ignored) {}
+            MainFrame frame = new MainFrame();
+            frame.setVisible(true);
+        });
     }
 }
