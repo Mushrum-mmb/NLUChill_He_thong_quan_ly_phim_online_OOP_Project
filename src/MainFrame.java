@@ -412,7 +412,7 @@ public class MainFrame extends JFrame {
             wrap.add(card); return wrap;
         }
 
-        // User: dùng UserPanel đầy đủ (cập nhật, đổi mật khẩu, xóa tài khoản)
+       //cập nhật, đổi mật khẩu, xóa tài khoản
         MemberView memView = new MemberView();
         memView.loadMember(currentMember);
         memView.setUserListener(new MemberView.MemberListener() {
