@@ -19,7 +19,6 @@ import java.util.List;
 public class MovieView extends JPanel {
 	// giao diện thực thi
     public interface MovieListener {
-        void onSearch(String keyword);
         void onWatch(Movie movie);
         void onComment(Movie movie, String content);
         void onRate(Movie movie, int stars);
